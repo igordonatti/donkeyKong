@@ -1,19 +1,17 @@
-import pygame
-from sys import exit
+from donkeyKong import game
 
-pygame.init()
-screen = pygame.display.set_mode((500, 700))
-pygame.display.set_caption('Donkey Kong - 1981')
-clock = pygame.time.Clock()
+# screen = pygame.display.set_mode((500, 700))
+# clock = pygame.time.Clock()
 
-while True:
-  for event in pygame.event.get():
-    if event.type == pygame.QUIT:
-      pygame.quit()
-      exit()
+# mario_surf = pygame.image.load('assets/shapes/pngs/mario_static.png').convert_alpha()
+# mario_surf = pygame.transform.scale(mario_surf, (45, 36))
+# # ajuda na hora que tiver os mapas construidos pois consiguiremos "colar"
+# # o mario no chao ja que saberemos onde estarao as plataformas.
+# player_rect = mario_surf.get_rect(topleft = (0, 600))
 
-  # draw all our elements
-  # upddate everything
-  pygame.display.update()
-  # not to run more that 60s per minute
-  clock.tick(60)
+
+if __name__ == '__main__':
+  '''inicialização do jogo'''
+  
+  # normal run
+  game.DonkeyKong()
