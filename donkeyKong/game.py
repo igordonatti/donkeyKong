@@ -11,9 +11,8 @@ class DonkeyKong():
     self.screen = pygame.display.set_mode((self.display.WIDTH, self.display.HEIGHT))
     self.keys = pygame.key.get_pressed()
 
-
     self.clock = pygame.time.Clock()
-    self.mario.drawMario()
+    self.mario.drawMario(self.screen)
     self.run()
   
   def run(self):
@@ -24,8 +23,8 @@ class DonkeyKong():
           exit()
         
       self.screen.fill((0,0,0))
-      self.mario.plat_move()
-      self.mario.drawMario()
+      self.mario.movement()
+      self.mario.drawMario(self.screen)
 
       pygame.display.update()
       
