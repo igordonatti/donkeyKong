@@ -2,7 +2,6 @@ import pygame
 from .display import Display
 from .sprites.mario import Mario
 
-
 class DonkeyKong():
   def __init__(self):
     self.fps = 60
@@ -10,9 +9,10 @@ class DonkeyKong():
     self.mario = Mario()
 
     self.screen = pygame.display.set_mode((self.display.WIDTH, self.display.HEIGHT))
+    self.keys = pygame.key.get_pressed()
 
     self.clock = pygame.time.Clock()
-    self.draw_mario()
+    self.mario.drawMario(self.screen)
     self.run()
   
   def run(self):
@@ -22,17 +22,17 @@ class DonkeyKong():
           pygame.quit()
           exit()
         
-        if event.type == pygame.K_LEFT:
-          self.mario.plat_move(-1)
-
+      self.screen.fill((0,0,0))
+      self.mario.movement()
+      self.mario.drawMario(self.screen)
 
       pygame.display.update()
       
       self.clock.tick(60)
 
-  def draw_mario(self):
-    self.mario_surface = pygame.image.load('./assets/shapes/pngs/mario_static.png')
-    self.mario_surface = pygame.transform.scale(self.mario_surface, (45, 36))
-    self.mario_rect = self.mario_surface.get_rect(midbottom = (self.mario.posX, self.mario.posY))
+  # def draw_mario(self):
+  #   self.mario_surface = pygame.image.load('./assets/shapes/pngs/mario_static.png')
+  #   self.mario_surface = pygame.transform.scale(self.mario_surface, (45, 36))
+  #   self.mario_rect = self.mario_surface.get_rect(midbottom = (self.mario.posX, self.mario.posY))
 
-    self.screen.blit(self.mario_surface, self.mario_rect)
+  #   self.screen.blit(self.mario_surface, self.mario_rect)
