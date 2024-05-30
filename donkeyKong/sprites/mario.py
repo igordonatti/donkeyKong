@@ -2,6 +2,7 @@ import pygame
 
 mario_live = './assets/shapes/svgs/mario_static.svg'
 mario_running = './assets/shapes/svgs/mario_running_1.svg'
+mario_running2 = './assets/shapes/svgs/mario_running_2.svg'
 mario_jump = './assets/shapes/svgs/mario_jump.svg'
 
 class Mario(pygame.sprite.Sprite):
@@ -15,6 +16,7 @@ class Mario(pygame.sprite.Sprite):
     self.__yVelocity = 5
     self.__groundLevel = 700
     self.__direction = 'R'
+    self.__frame_counter = 0  # Contador para alternar entre as imagens de corrida
     
     self.__isRunning = False
     
@@ -45,38 +47,36 @@ class Mario(pygame.sprite.Sprite):
     self.applyGravity()
       
   def drawMario(self, screen):
-    
-    # Desenhos em X
-    if(self.__isRunning and self.__direction == 'R' and not self.__isJumping):
-      self.mario_surface = pygame.image.load(mario_running) 
-      self.mario_surface = pygame.transform.scale(self.mario_surface, (45, 36))
-      
-    elif (self.__isRunning and self.__direction == 'L' and not self.__isJumping):
-      self.mario_surface = pygame.image.load(mario_running)
-      self.mario_surface = pygame.transform.scale(self.mario_surface, (45, 36))
-      self.mario_surface = pygame.transform.flip(self.mario_surface, True, False)
-      
-    elif (self.__direction == 'L' and not self.__isJumping):
-      self.mario_surface = pygame.image.load(mario_live)
-      self.mario_surface = pygame.transform.scale(self.mario_surface, (45, 36))
-      self.mario_surface = pygame.transform.flip(self.mario_surface, True, False)
-      
-    elif(self.__direction == 'R' and not self.__isJumping): 
-      self.mario_surface = pygame.image.load(mario_live)
-      self.mario_surface = pygame.transform.scale(self.mario_surface, (45, 36))
-      
-    # Desenhos em Y
-    if(self.__isJumping and self.__direction == 'R'):
-      self.mario_surface = pygame.image.load(mario_jump)
-      self.mario_surface = pygame.transform.scale(self.mario_surface, (45, 36))
-      
-    elif(self.__isJumping and self.__direction == 'L'):
-      self.mario_surface = pygame.image.load(mario_jump)
-      self.mario_surface = pygame.transform.scale(self.mario_surface, (45, 36))
-      self.mario_surface = pygame.transform.flip(self.mario_surface, True, False)
-      
-    self.mario_rect = self.mario_surface.get_rect(midbottom = (self.__posX, self.__posY))
-    screen.blit(self.mario_surface, self.mario_rect)
+        # Atualiza o contador de frames
+        self.__frame_counter = (self.__frame_counter + 1) % 12  # Ciclo a cada 12 frames
+
+        # Escolhe a imagem de corrida correta
+        if self.__isRunning and not self.__isJumping:
+            if self.__frame_counter < 6:
+                run_surface = pygame.image.load(mario_running)
+            else:
+                run_surface = pygame.image.load(mario_running2)
+            run_surface = pygame.transform.scale(run_surface, (45, 36))
+            if self.__direction == 'L':
+                run_surface = pygame.transform.flip(run_surface, True, False)
+            self.mario_surface = run_surface
+        elif not self.__isJumping:
+            self.mario_surface = pygame.image.load(mario_live)
+            self.mario_surface = pygame.transform.scale(self.mario_surface, (45, 36))
+            if self.__direction == 'L':
+                self.mario_surface = pygame.transform.flip(self.mario_surface, True, False)
+        
+        # Desenhos em Y
+        if self.__isJumping:
+            jump_surface = pygame.image.load(mario_jump)
+            jump_surface = pygame.transform.scale(jump_surface, (45, 36))
+            if self.__direction == 'L':
+                jump_surface = pygame.transform.flip(jump_surface, True, False)
+            self.mario_surface = jump_surface
+
+        self.mario_rect = self.mario_surface.get_rect(midbottom=(self.__posX, self.__posY))
+        screen.blit(self.mario_surface, self.mario_rect)
+
       
   def applyGravity(self):
     if self.__isJumping:
