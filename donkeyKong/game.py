@@ -1,38 +1,29 @@
 import pygame
+from .maps.initialmap import InitialMap
 from .display import Display
 from .sprites.mario import Mario
 
 class DonkeyKong():
-  def __init__(self):
-    self.fps = 60
-    self.display = Display()
-    self.mario = Mario()
+    def __init__(self):
+        self.fps = 60
+        self.display = Display()
+        self.mario = Mario()
+        self.screen = pygame.display.set_mode((self.display.width, self.display.height))
+        self.map = InitialMap(self.screen, self.display.section_width, self.display.section_height, self.display.slope)
+        self.clock = pygame.time.Clock()
+        self.keys = pygame.key.get_pressed()
+        self.run()
 
-    self.screen = pygame.display.set_mode((self.display.WIDTH, self.display.HEIGHT))
-    self.keys = pygame.key.get_pressed()
+    def run(self):
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
 
-    self.clock = pygame.time.Clock()
-    self.mario.drawMario(self.screen)
-    self.run()
-  
-  def run(self):
-    while True:
-      for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-          pygame.quit()
-          exit()
-        
-      self.screen.fill((0,0,0))
-      self.mario.movement()
-      self.mario.drawMario(self.screen)
-
-      pygame.display.update()
-      
-      self.clock.tick(60)
-
-  # def draw_mario(self):
-  #   self.mario_surface = pygame.image.load('./assets/shapes/pngs/mario_static.png')
-  #   self.mario_surface = pygame.transform.scale(self.mario_surface, (45, 36))
-  #   self.mario_rect = self.mario_surface.get_rect(midbottom = (self.mario.posX, self.mario.posY))
-
-  #   self.screen.blit(self.mario_surface, self.mario_rect)
+            self.screen.fill((0, 0, 0))
+            self.map.draw()  # Chama draw aqui, passando self.screen
+            self.mario.movement()
+            self.mario.drawMario(self.screen)
+            pygame.display.update()
+            self.clock.tick(60)
