@@ -1,20 +1,29 @@
 import pygame
-from .maps.initialmap import InitialMap
+from .Menu.menu import Menu
+from ..maps.initialmap import InitialMap
 from .display import Display
-from .sprites.mario import Mario
+from ..sprites.mario import Mario
+from customtkinter import *
 
-class DonkeyKong():
+# O jogo se inicia aqui
+class Game():
     def __init__(self):
         self.fps = 60
         self.display = Display()
+        
+        self.menu = Menu()
+        
+        
         self.mario = Mario()
         self.screen = pygame.display.set_mode((self.display.width, self.display.height))
         self.map = InitialMap(self.screen, self.display.section_width, self.display.section_height, self.display.slope)
         self.clock = pygame.time.Clock()
         self.keys = pygame.key.get_pressed()
+        
+        
         self.run()
 
-    def run(self):
+    def run(self):        
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

@@ -55,10 +55,14 @@ class Mario(pygame.sprite.Sprite):
                 run_surface = pygame.image.load(mario_running)
             else:
                 run_surface = pygame.image.load(mario_running2)
+                
             run_surface = pygame.transform.scale(run_surface, (45, 36))
+            
             if self.__direction == 'L':
-                run_surface = pygame.transform.flip(run_surface, True, False)
+              run_surface = pygame.transform.flip(run_surface, True, False)
+              
             self.mario_surface = run_surface
+            
         elif not self.__isJumping:
             self.mario_surface = pygame.image.load(mario_live)
             self.mario_surface = pygame.transform.scale(self.mario_surface, (45, 36))

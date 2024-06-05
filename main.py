@@ -1,4 +1,4 @@
-from donkeyKong import game
+from donkeyKong.gameConfig.game import Game
 
 # screen = pygame.display.set_mode((500, 700))
 # clock = pygame.time.Clock()
@@ -14,4 +14,5 @@ if __name__ == '__main__':
   '''inicialização do jogo'''
   
   # normal run
-  game.DonkeyKong()
+  app = Game()
+  app.run()
