@@ -6,5 +6,8 @@ class App(CTk):
     self.geometry("600x500")
     self.title("Donkey Kong - Menu")
     
-    self.button = CTkButton(self, text="Jogar")
+    self.button = CTkButton(self, text="Jogar", command=self.playButton())
     self.button.pack(padx = 50, pady=50)
+
+  def playButton(self):
+    print("Button Clicked")

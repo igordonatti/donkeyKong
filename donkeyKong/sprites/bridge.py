@@ -1,7 +1,5 @@
 import pygame
 
-bridge_image = './assets/shapes/svgs/iron_bar.svg'
-
 class Bridge(pygame.sprite.Sprite):
     def __init__(self, x_pos, y_pos, length, section_width, section_height):
         super().__init__()
@@ -13,8 +11,6 @@ class Bridge(pygame.sprite.Sprite):
         # Adiciona a criação do retângulo 'top'
         self.top = pygame.Rect(x_pos, y_pos, length * section_width, section_height)
         
-        self.bridge_surface = pygame.image.load(bridge_image) 
-
     def draw(self, screen):
         line_width = 7
         platform_color = (255, 51, 129)  # Rosa
