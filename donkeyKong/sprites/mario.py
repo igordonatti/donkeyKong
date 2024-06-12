@@ -6,24 +6,25 @@ mario_running2 = './assets/shapes/svgs/mario_running_2.svg'
 mario_jump = './assets/shapes/svgs/mario_jump.svg'
 
 class Mario(pygame.sprite.Sprite):
-  def __init__(self):
-    self.__posX = 50 # Posição Inicial em X
-    self.__posY = 700 # Posição Inicial em Y
+  def __init__(self, start_x, start_y, platforms):
+    self.__posX = start_x # Posição Inicial em X
+    self.__posY = start_y # Posição Inicial em Y
     self.__velocity = 3 # Velocidade de movimentação
     self.__gravity = 1 # Variável para aplicar a gravidade ao pulo
     self.__isJumping = False # Controla para saber se está pulando ou não
     self.__jumpSpeed = 10 # Altura do pulo
     self.__yVelocity = 5 # Velocidade em Y
-    self.__groundLevel = 700 # Controla o terreno em que o Mario está (Plataformas)
+    self.__groundLevel = start_y # Controla o terreno em que o Mario está (Plataformas)
     self.__direction = 'R' # Controla a direção do Mario (Direita ou Esquerda)
     self.__frame_counter = 0  # Contador para alternar entre as imagens de corrida
     self.__isRunning = False # Mario está se movendo para os lados ou não
+    
+    self.platforms = platforms # Adiciona as plataformas
     
     self.mario_surface = pygame.image.load(mario_live) # Carrega a primeira imagem do Mario 
     self.mario_surface = pygame.transform.scale(self.mario_surface, (45, 36)) # Aumenta a escala do Mario
   def movement(self): # Método de movimentação em X e Y
     keys = pygame.key.get_pressed()
-    
     
     # Movimentacoes em X
     if keys[pygame.K_RIGHT]:
@@ -86,11 +87,22 @@ class Mario(pygame.sprite.Sprite):
       self.__posY += self.__yVelocity
       self.__yVelocity += self.__gravity
       
-      if self.__posY >= self.__groundLevel:
-        self.__posY = self.__groundLevel
-        self.__isJumping = False
+    if not self.__isJumping or self.__yVelocity >= 0:
+      on_platform = False
+      for platform in self.platforms:
+        if platform.collidepoint(self.__posX, self.__posY):
+          self.__posY = platform.top
+          self.__groundLevel = platform.top
+          self.__isJumping = False
+          self.__yVelocity = 0
+          on_platform = True
+          break
         
-        self.__yVelocity = 0
+        if not on_platform:
+          self.__isJumping = True
+          
+        self.mario_rect.midbottom = (self.__posX, self.__posY)
+     
       
   @property
   def posX(self):

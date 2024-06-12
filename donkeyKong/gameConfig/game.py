@@ -1,9 +1,9 @@
 import pygame
-from .Menu.menu import Menu
 from ..maps.initialmap import InitialMap
 from .display import Display
 from ..sprites.mario import Mario
 from customtkinter import *
+from .Menu.App import App
 
 # O jogo se inicia aqui
 class Game():
@@ -11,17 +11,21 @@ class Game():
         self.fps = 60
         self.display = Display()
         
-        self.menu = Menu()
+        self.menu = None
         
-        
-        self.mario = Mario()
         self.screen = pygame.display.set_mode((self.display.width, self.display.height))
         self.map = InitialMap(self.screen, self.display.section_width, self.display.section_height, self.display.slope)
+      
+        start_x, start_y = self.map.get_initial_mario_position()
+        self.mario = Mario(start_x, start_y, self.map.platforms)
+        
         self.clock = pygame.time.Clock()
         self.keys = pygame.key.get_pressed()
         
-        
-        self.run()
+    def start_game(self):
+      if self.menu:
+        self.menu.destroy()
+      self.run()
 
     def run(self):        
         while True:

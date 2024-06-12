@@ -7,10 +7,12 @@ class InitialMap():
         self.section_width = section_width
         self.section_height = section_height
         self.slope = slope
+        
         self.bridge_objs = []
         self.platforms = []
         self.climbers = []
         self.ladder_objs = []
+        
         self.levels = self.create_levels()
         self.create_bridges() 
         self.create_ladders()
@@ -108,5 +110,9 @@ class InitialMap():
         for ladder in self.ladder_objs:
             ladder.draw(self.screen)
 
+    def get_initial_mario_position(self):
+      first_bridge = self.levels[0]['bridges'][0]
+      x, y, _ = first_bridge
+      return x * self.section_width, y
 
         
